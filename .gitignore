@@ -18,7 +18,6 @@
 *.war
 *.nar
 *.ear
-*.xml
 *.zip
 *.tar.gz
 *.rar
