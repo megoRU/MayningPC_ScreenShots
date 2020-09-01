@@ -33,10 +33,7 @@ public class Main {
           directory.mkdir();
         }
         if (directory.exists()) {
-          Document doc = Jsoup.connect("https://megolox.ru/mayning/").data("query", "Java")
-              .userAgent(
-                  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
-              .cookie("auth", "token").get();
+          Document doc = Jsoup.connect("https://megolox.ru/mayning/").data("query", "Java").userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36").cookie("auth", "token").get();
           Elements h1Elements = doc.select("h2");
           String h2 = h1Elements.text();
 
@@ -44,8 +41,7 @@ public class Main {
           BufferedImage screenShot = robot.createScreenCapture(new Rectangle(
               Toolkit.getDefaultToolkit().getScreenSize()));
           Calendar now = Calendar.getInstance();
-          ImageIO.write(screenShot, "JPG",
-              new File(localFolderName + "\\" + formatter.format(now.getTime()) + ".jpg"));
+          ImageIO.write(screenShot, "JPG", new File(localFolderName + "\\" + formatter.format(now.getTime()) + ".jpg"));
           System.out.println(formatter.format(now.getTime()));
           ChannelSftp channelSftp = setupJsch();
           channelSftp.connect();
