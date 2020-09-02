@@ -2,6 +2,7 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpATTRS;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -18,11 +19,12 @@ import org.jsoup.select.Elements;
 
 public class Main {
 
-  private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HH_mm_ss");
+  private static final SimpleDateFormat formatter = new SimpleDateFormat("HH.mm.ss");
+  private static final SimpleDateFormat formatter2 = new SimpleDateFormat("dd.MM.yyyy");
   private static final String remoteHost = "95.181.157.159";
   private static final String username = "";
   private static final String password = "";
-  private static final String localFolderName = "C:\\MayningImagesFolder";
+  private static final String localFolderName = "C://MayningImagesFolder";
   private static final String folderSFTP = "/var/www/vhosts/megolox.ru/httpdocs/mayningImages/";
 
   public static void main(String[] args) {
@@ -41,14 +43,23 @@ public class Main {
           BufferedImage screenShot = robot.createScreenCapture(new Rectangle(
               Toolkit.getDefaultToolkit().getScreenSize()));
           Calendar now = Calendar.getInstance();
-          ImageIO.write(screenShot, "JPG", new File(localFolderName + "\\" + formatter.format(now.getTime()) + ".jpg"));
-          System.out.println(formatter.format(now.getTime()));
+          ImageIO.write(screenShot, "JPG", new File(localFolderName + "/" + formatter.format(now.getTime()) + ".jpg"));
+          System.out.println("Сохранена картинка: " + formatter.format(now.getTime()) + ".jpg");
           ChannelSftp channelSftp = setupJsch();
           channelSftp.connect();
-          channelSftp.put(localFolderName + "\\" + formatter.format(now.getTime()) + ".jpg",
-              folderSFTP + formatter.format(now.getTime()) + ".jpg");
+          String dayFormating = formatter2.format(now.getTime());
+          SftpATTRS attrs = null;
+          try {
+            attrs = channelSftp.stat(folderSFTP + dayFormating);
+          } catch (Exception ignored) {
+          }
+          if (attrs != null) {
+          } else {
+            channelSftp.mkdir(folderSFTP + dayFormating);
+          }
+          channelSftp.put(localFolderName + "/" + formatter.format(now.getTime()) + ".jpg", folderSFTP + dayFormating + "/" + formatter.format(now.getTime()) + ".jpg");
           channelSftp.exit();
-          Files.delete(Path.of(localFolderName + "\\" + formatter.format(now.getTime()) + ".jpg"));
+          Files.delete(Path.of(localFolderName + "/" + formatter.format(now.getTime()) + ".jpg"));
           Thread.sleep(Long.parseLong(h2));
         }
       } catch (Exception ex) {
