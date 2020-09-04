@@ -9,9 +9,8 @@ private static final String localFolderName = "C://MayningImagesFolder"; <br>
 private static final String folderSFTP = "/var/www/vhosts/megolox.ru/httpdocs/mayningImages/"; //DIRECTORY ON SFTP SERVER <br>
 
 ## Remote time change:
-Upload on Web server and:
-Change [h2](https://github.com/megoRU/MayningPC_ScreenShots/blob/5145292afde4f62e601c3ba4358f898e83b91335/index.html#L9) tag
-
+Upload on Web server and: <br>
+Change [h2 tag](https://github.com/megoRU/MayningPC_ScreenShots/blob/5145292afde4f62e601c3ba4358f898e83b91335/index.html#L9) <br>
 
 ## Run app:
 Use .bat for run app:
