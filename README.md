@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/megoRU/MayningPC_ScreenShots.svg?branch=master)](https://travis-ci.com/megoRU/MayningPC_ScreenShots)
+
 # MayningPC_ScreenShots
 The program makes screenshots and downloads in path SFTP server. Then you can watch it all through the browser.
 
