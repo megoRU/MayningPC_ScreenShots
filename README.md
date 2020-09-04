@@ -11,6 +11,7 @@ private static final String folderSFTP = "/var/www/vhosts/megolox.ru/httpdocs/ma
 ## Remote time change:
 Upload on Web server and: <br>
 Change [h2 tag](https://github.com/megoRU/MayningPC_ScreenShots/blob/5145292afde4f62e601c3ba4358f898e83b91335/index.html#L9) <br>
+Change [link site](https://github.com/megoRU/MayningPC_ScreenShots/blob/55431eb3b2f5155701e24b334deffbd44f10e2d5/src/main/java/Main.java#L38)
 
 ## Run app:
 Use .bat for run app:
