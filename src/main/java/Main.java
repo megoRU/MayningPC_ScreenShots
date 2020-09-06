@@ -10,12 +10,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import javax.imageio.ImageIO;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 public class Main {
 
@@ -26,6 +28,10 @@ public class Main {
   private static final String password = "";
   private static final String localFolderName = "C://MayningImagesFolder";
   private static final String folderSFTP = "/var/www/vhosts/megolox.ru/httpdocs/mayningImages/";
+  private static final String CONN = "jdbc:mysql://95.181.157.159:3306/?useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
+  private static final String USER = "";
+  private static final String PASS = "";
+  private static final HashMap<Integer, String> time = new HashMap<Integer, String>();
 
   public static void main(String[] args) {
     for (; ; ) {
@@ -35,9 +41,15 @@ public class Main {
           directory.mkdir();
         }
         if (directory.exists()) {
-          Document doc = Jsoup.connect("https://megolox.ru/mayning/").data("query", "Java").userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36").cookie("auth", "token").get();
-          Elements h1Elements = doc.select("h2");
-          String h2 = h1Elements.text();
+          String query = "SELECT id, text FROM ScreenShots WHERE id = 0";
+          Connection conn = DriverManager.getConnection(CONN, USER, PASS);
+          Statement statement = conn.createStatement();
+          ResultSet rs = statement.executeQuery(query);
+          while (rs.next()) {
+            String id = rs.getString("id");
+            String text = rs.getString("text");
+            time.put(Integer.parseInt(id), text);
+          }
 
           Robot robot = new Robot();
           BufferedImage screenShot = robot.createScreenCapture(new Rectangle(
@@ -60,7 +72,8 @@ public class Main {
           channelSftp.put(localFolderName + "/" + formatter.format(now.getTime()) + ".jpg", folderSFTP + dayFormating + "/" + formatter.format(now.getTime()) + ".jpg");
           channelSftp.exit();
           Files.delete(Path.of(localFolderName + "/" + formatter.format(now.getTime()) + ".jpg"));
-          Thread.sleep(Long.parseLong(h2));
+          Thread.sleep(Long.parseLong(time.get(0)));
+          time.remove(0);
         }
       } catch (Exception ex) {
         ex.printStackTrace();
